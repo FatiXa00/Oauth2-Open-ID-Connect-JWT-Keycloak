@@ -26,8 +26,10 @@ public class SecurityConfig {
                 //it works meme sans .csrf token :)
                 .headers(h->h.frameOptions(fo->fo.disable()))
                 .sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(ar->ar.requestMatchers("/api/**","/h2-console/**").permitAll())
+                .authorizeHttpRequests(ar->ar.requestMatchers("/h2-console/**").permitAll())
+                .authorizeHttpRequests(ar->ar.requestMatchers("/api/products/**").hasAuthority("ADMIN"))
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
+                .oauth2ResourceServer(o2->o2.jwt(Customizer.withDefaults())) //pour verification du token valide
                 .build();
 
     }
